@@ -2,21 +2,31 @@ const Users = {
 
 };
 
-const addUsers = ({ data, socket }) => {
+const addUser = ({ data, socket }) => {
   const { id: socketId } = socket;
-  const { name } = data;
-  if (Users[name]) {
+  const { name, room = 'lobby' } = data;
+  const isDuplicate = Object.keys(Users).filter(socketId => Users[socketId].name === name).length !== 0;
+  if (isDuplicate) {
     return { result: false, message: 'Duplicate' };
   }
-  Users[name] = { socketId };
+  Users[socketId] = {
+    socketId,
+    name,
+    room
+  };
   return { result: true };
 }
 
-const removeUsers = () => {
+const removeUser = () => {
 
 }
 
+const getUser = (socketId) => {
+  return Users[socketId];
+}
+
 export {
-  addUsers,
-  removeUsers
+  addUser,
+  removeUser,
+  getUser
 } 

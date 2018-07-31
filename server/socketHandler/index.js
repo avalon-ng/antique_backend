@@ -1,4 +1,4 @@
-import { onEvent as login } from './login';
+import login from './login';
 import createRoom from './createRoom';
 
 const EventList = [
