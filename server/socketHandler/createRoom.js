@@ -12,15 +12,16 @@ const createRoom = (socket) => {
 const processEvent = ({ socket, data: param }) => {
   const { result, data } = addRoom({ socket, data: param });
   const { number, room } = data;
-  const user = getUser(socket.id);
+  const socketId = socket.id;
+  const user = getUser(socketId);
 
   if (!user.isValid('createRoom')) {
-    socket.emit('createRoom', { result: false, message: 'Existed' });
-    return
+    socket.emit('createRoom', { result: false, message: user.isValid.error });
+    return;
   }
 
   const { name } = user.getState();
-  room.addUser(name);
+  room.addUser({ name, socketId });
   room.changeCreator(0);
   user.changeRoom(number);
   socket.emit('createRoom', { result, data })

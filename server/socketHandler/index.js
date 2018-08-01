@@ -1,9 +1,11 @@
 import login from './login';
 import createRoom from './createRoom';
+import joinRoom from './joinRoom';
 
 const EventList = [
   login,
-  createRoom
+  createRoom,
+  joinRoom
 ];
 
 const bindSocketEvent = (io) => {

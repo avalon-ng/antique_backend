@@ -14,8 +14,16 @@ const createUser = ({ socketId, name }) => {
   const getState = () => user;
   const isValid = (type) => {
     switch(type) {
-      case 'createRoom':
-        return user.room === 'lobby';
+      case 'createRoom': {
+        const result = user.room === 'lobby';
+        isValid.error = result ? '' : 'Joined';
+        return result;
+      }
+      case 'joinRoom': {
+        const result = user.room === 'lobby';
+        isValid.error = result ? '' : 'Joined';
+        return result;
+      }
       default:
         return false;
     };
@@ -30,7 +38,7 @@ const createUser = ({ socketId, name }) => {
 const addUser = ({ data, socket }) => {
   const { id: socketId } = socket;
   const { name } = data;
-  const isDuplicate = Object.keys(Users).filter(socketId => Users[socketId].name === name).length !== 0;
+  const isDuplicate = Object.keys(Users).filter(socketId => Users[socketId].getState().name === name).length !== 0;
   if (isDuplicate) {
     return { result: false, message: 'Duplicate' };
   }
