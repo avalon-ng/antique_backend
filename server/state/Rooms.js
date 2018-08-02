@@ -13,6 +13,7 @@ const createRoom = (data) => {
     maxUserAmount: 8,
     users: [],
     players: [],
+    disconnectPlayers: [],
     password: '',
     status: 'waiting'
   };
