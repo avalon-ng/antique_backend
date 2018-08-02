@@ -3,12 +3,6 @@ import { Rooms, Users } from '../state';
 const { getRoom } = Rooms;
 const { getUser } = Users;
 
-const joinRoom = (socket) => {
-  socket.on('joinRoom', (data) => {
-    processEvent({ socket, data });
-  })
-}
-
 const processEvent = ({ socket, data: param }) => {
   const { number, password } = param;
   const socketId = socket.id;
@@ -32,8 +26,15 @@ const processEvent = ({ socket, data: param }) => {
   const { name } = user.getState();
   room.addUser({ name, socketId });
   user.changeRoom(number);
-  socket.emit('joinRoom', { result: true, data: { number } })
+  socket.emit('joinRoom', { result: true, data: { number } });
+  socket.leave('lobby');
   socket.join(number);
-}
+};
+
+const joinRoom = (socket) => {
+  socket.on('joinRoom', (data) => {
+    processEvent({ socket, data });
+  });
+};
 
 export default joinRoom;

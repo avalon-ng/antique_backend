@@ -3,12 +3,6 @@ import { Rooms, Users } from '../state';
 const { addRoom } = Rooms;
 const { getUser } = Users;
 
-const createRoom = (socket) => {
-  socket.on('createRoom', (data) => {
-    processEvent({ socket, data });
-  })
-}
-
 const processEvent = ({ socket, data: param }) => {
   const { result, data } = addRoom({ socket, data: param });
   const { number, room } = data;
@@ -24,8 +18,16 @@ const processEvent = ({ socket, data: param }) => {
   room.addUser({ name, socketId });
   room.changeCreator(0);
   user.changeRoom(number);
-  socket.emit('createRoom', { result, data })
+  socket.emit('createRoom', { result, data });
+  socket.leave('lobby');
   socket.join(number);
-}
+};
+
+
+const createRoom = (socket) => {
+  socket.on('createRoom', (data) => {
+    processEvent({ socket, data });
+  });
+};
 
 export default createRoom;
