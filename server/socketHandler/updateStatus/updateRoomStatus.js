@@ -1,4 +1,4 @@
-import { Rooms, Users } from '../state';
+import { Rooms, Users } from '../../state';
 
 const { getRoomsStatus } = Rooms;
 const { getUser } = Users;

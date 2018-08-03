@@ -1,15 +1,15 @@
 import login from './login';
 import createRoom from './createRoom';
 import joinRoom from './joinRoom';
-import updateRoomStatus from './updateRoomStatus';
-import updateUserStatus from './updateUserStatus';
+import { updateRoomStatus, updateLobbyStatus, updateUserStatus } from './updateStatus';
 
 const EventList = [
   login,
   createRoom,
   joinRoom,
   updateRoomStatus,
-  updateUserStatus
+  updateUserStatus,
+  updateLobbyStatus
 ];
 
 const bindSocketEvent = (io) => {
