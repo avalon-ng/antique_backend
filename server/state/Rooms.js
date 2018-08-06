@@ -1,5 +1,4 @@
 const Rooms = {
-
 };
 
 const generateNumber = () => `${Math.floor(1000 + ((9999 - 1000) * Math.random()))}`;
@@ -102,6 +101,7 @@ const getRoomsStatus = () => Object
       status
     };
   });
+
 
 export {
   addRoom,
