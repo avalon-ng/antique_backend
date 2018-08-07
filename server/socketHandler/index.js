@@ -1,6 +1,7 @@
 import login from './login';
 import createRoom from './createRoom';
 import joinRoom from './joinRoom';
+import leaveRoom from './leaveRoom';
 import { updateRoomStatus, updateLobbyStatus, updateUserStatus } from './updateStatus';
 import sendMessage from './sendMessage';
 import updateMessages from './updateMessages';
@@ -13,7 +14,8 @@ const EventList = [
   updateUserStatus,
   updateLobbyStatus,
   sendMessage,
-  updateMessages
+  updateMessages,
+  leaveRoom
 ];
 
 const bindSocketEvent = (io) => {

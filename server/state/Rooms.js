@@ -19,6 +19,15 @@ const createRoom = (data) => {
   const addUser = ({ socketId, name }) => {
     room.users = [...room.users, { socketId, name }];
   };
+  const removeUser = (socketId) => {
+    const index = room.users.findIndex(user => user.socketId === socketId);
+    if (index !== -1) {
+      room.users = [
+        ...room.users.slice(0, index),
+        ...room.users.slice(index + 1)
+      ];
+    }
+  };
   const changeCreator = (index) => {
     room.creator = index;
   };
@@ -36,6 +45,10 @@ const createRoom = (data) => {
         isValid.error = condition ? condition.message : '';
         return !condition;
       }
+      case 'removeRoom': {
+        // need to add more condition
+        return (room.users.length === 0 && room.status === 'waiting');
+      }
       default:
         return false;
     }
@@ -51,6 +64,7 @@ const createRoom = (data) => {
   init();
   return {
     addUser,
+    removeUser,
     changeCreator,
     getState,
     isValid
@@ -66,41 +80,43 @@ const addRoom = ({ data, socket }) => {
   return { result: true, data: { number, room } };
 };
 
-const removeRoom = () => {
-
+const removeRoom = (number) => {
+  delete Rooms[number];
 };
 
 const getRoom = (number) => {
   return Rooms[number];
 };
 
-const getRoomsStatus = () => Object
-  .keys(Rooms)
-  .sort((n1, n2) => parseInt(n1, 10) - parseInt(n2, 10))
-  .map((number) => {
-    const room = Rooms[number];
-    const {
-      users,
-      players,
-      password,
-      minPlayerAmount,
-      maxPlayerAmount,
-      maxUserAmount,
-      creator,
-      status
-    } = room.getState();
-    return {
-      number,
-      password: password !== '',
-      users: users.map(user => user.name),
-      players: players.map(player => player.name),
-      creator: users[creator].name,
-      minPlayerAmount,
-      maxPlayerAmount,
-      maxUserAmount,
-      status
-    };
-  });
+const getRoomsStatus = () => {
+  return Object
+    .keys(Rooms)
+    .sort((n1, n2) => parseInt(n1, 10) - parseInt(n2, 10))
+    .map((number) => {
+      const room = Rooms[number];
+      const {
+        users,
+        players,
+        password,
+        minPlayerAmount,
+        maxPlayerAmount,
+        maxUserAmount,
+        creator,
+        status
+      } = room.getState();
+      return {
+        number,
+        password: password !== '',
+        users: users.map(user => user.name),
+        players: players.map(player => player.name),
+        creator: users[creator].name,
+        minPlayerAmount,
+        maxPlayerAmount,
+        maxUserAmount,
+        status
+      };
+    });
+};
 
 
 export {

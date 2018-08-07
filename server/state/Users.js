@@ -56,22 +56,24 @@ const getUser = (socketId) => {
   return Users[socketId];
 };
 
-const getUsersStatus = () => Object
-  .keys(Users)
-  .sort((id1, id2) => Users[id1].getState().name.localeCompare(Users[id2].getState().name))
-  .map((socketId) => {
-    const user = Users[socketId];
-    const {
-      name,
-      number
-    } = user.getState();
-    const room = getRoom(number);
-    return {
-      name,
-      number,
-      status: number === 'lobby' ? 'lobby' : room.getState().status
-    };
-  });
+const getUsersStatus = () => {
+  return Object
+    .keys(Users)
+    .sort((id1, id2) => Users[id1].getState().name.localeCompare(Users[id2].getState().name))
+    .map((socketId) => {
+      const user = Users[socketId];
+      const {
+        name,
+        number
+      } = user.getState();
+      const room = getRoom(number);
+      return {
+        name,
+        number,
+        status: number === 'lobby' ? 'lobby' : room.getState().status
+      };
+    });
+};
 
 
 export {
